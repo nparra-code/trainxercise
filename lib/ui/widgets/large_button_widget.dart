@@ -18,15 +18,14 @@ class _LargeButtonWidgetState extends State<LargeButtonWidget> {
   Widget build(BuildContext context) {
     double devHeight = MediaQuery.of(context).size.height;
     double devWidth = MediaQuery.of(context).size.width;
-    return Container(
-      width: devWidth * 0.8333,
-      height: devHeight * 0.0625,
-      child: Material(
-        color: widget.buttonColor,
-        child: InkWell(
-            child: Center(child: SubtitleWidget(subtitle: widget.title)),
-            onTap: widget.toDo,
+    return InkWell(
+      child: Ink(
+        width: devWidth * 0.8333,
+        height: devHeight * 0.0625,
+        decoration: BoxDecoration(
+            color: widget.buttonColor,
             borderRadius: BorderRadius.all(Radius.circular(15))),
+        child: Center(child: SubtitleWidget(subtitle: widget.title)),
       ),
     );
   }
