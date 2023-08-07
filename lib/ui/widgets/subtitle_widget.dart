@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 class SubtitleWidget extends StatelessWidget {
-  String subtitle = "";
+  final String subtitle;
+  final Color color;
 
-  SubtitleWidget({super.key, required this.subtitle});
+  const SubtitleWidget({super.key, required this.subtitle, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       subtitle,
-      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: color),
     );
   }
 }

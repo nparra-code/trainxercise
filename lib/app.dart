@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:trainxercise/app.dart';
+import 'package:flutter/services.dart';
 import 'package:trainxercise/ui/screens/introduction_screen.dart';
 
-void main() => runApp(const AppMaterial());
+class AppMaterial extends StatelessWidget {
+  const AppMaterial({super.key});
 
-/*
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Trainxercise',
       theme: ThemeData(
         fontFamily: 'Lexend',
         scaffoldBackgroundColor: const Color.fromRGBO(224, 225, 221, 1),
@@ -20,25 +18,25 @@ class MyApp extends StatelessWidget {
           primary: const Color.fromRGBO(17, 38, 59, 1),
         ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const App(title: 'Trainxercise'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class App extends StatefulWidget {
+  const App({super.key, required this.title});
+
   final String title;
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<App> createState() => _AppState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
+class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: IntroductionScreen(),
     );
   }
 }
-*/
