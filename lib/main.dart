@@ -1,44 +1,38 @@
+import 'package:authentication_repository/authentication_repository.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:trainxercise/app.dart';
-import 'package:trainxercise/ui/screens/introduction_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(const AppMaterial());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = const AppBlocObserver();
 
-/*
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  await Firebase.initializeApp();
 
-  // This widget is the root of your application.
+  final authenticationRepository = AuthenticationRepository();
+  await authenticationRepository.user.first;
+
+  runApp(const AppMaterial());
+}
+
+class AppBlocObserver extends BlocObserver {
+  /// {@macro app_bloc_observer}
+  const AppBlocObserver();
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        fontFamily: 'Lexend',
-        scaffoldBackgroundColor: const Color.fromRGBO(224, 225, 221, 1),
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: const Color.fromRGBO(17, 38, 59, 1),
-        ),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+    super.onChange(bloc, change);
+    if (bloc is Cubit) print(change);
+  }
+
+  @override
+  void onTransition(
+      Bloc<dynamic, dynamic> bloc,
+      Transition<dynamic, dynamic> transition,
+      ) {
+    super.onTransition(bloc, transition);
+    print(transition);
   }
 }
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: IntroductionScreen(),
-    );
-  }
-}
-*/

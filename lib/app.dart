@@ -1,6 +1,10 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trainxercise/authentication/bloc/authentication_bloc.dart';
 import 'package:trainxercise/ui/screens/introduction_screen.dart';
+import 'package:user_repository/user_repository.dart';
 
 class AppMaterial extends StatelessWidget {
   const AppMaterial({super.key});
@@ -9,16 +13,25 @@ class AppMaterial extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    return MaterialApp(
-      title: 'Trainxercise',
-      theme: ThemeData(
-        fontFamily: 'Lexend',
-        scaffoldBackgroundColor: const Color.fromRGBO(224, 225, 221, 1),
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: const Color.fromRGBO(17, 38, 59, 1),
+    return RepositoryProvider(
+      create: (context) => AuthenticationRepository(),
+      child: BlocProvider(
+        create: (context) => AuthenticationBloc(
+            authenticationRepository:
+                RepositoryProvider.of<AuthenticationRepository>(context),
+            userRepository: UserRepository()),
+        child: MaterialApp(
+          title: 'Trainxercise',
+          theme: ThemeData(
+            fontFamily: 'Lexend',
+            scaffoldBackgroundColor: const Color.fromRGBO(224, 225, 221, 1),
+            colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: const Color.fromRGBO(17, 38, 59, 1),
+            ),
+          ),
+          home: const App(title: 'Trainxercise'),
         ),
       ),
-      home: const App(title: 'Trainxercise'),
     );
   }
 }
