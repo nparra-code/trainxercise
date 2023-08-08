@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:user_repository/user_repository.dart';
 
 part 'authentication_event.dart';
 
@@ -11,62 +10,40 @@ part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc({
-    required AuthenticationRepository authenticationRepository})
+  AuthenticationBloc(
+      {required AuthenticationRepository authenticationRepository})
       : _authenticationRepository = authenticationRepository,
         super(
-        authenticationRepository.user
-      ) {
-    on<_AuthenticationStatusChanged>(_onAuthenticationStatusChanged);
-    on<AuthenticationLogOutRequested>(_onAuthenticationLogoutRequested);
-    _authenticationStatusSubscription = _authenticationRepository.status.listen(
-      (status) => add(_AuthenticationStatusChanged(status)),
+          authenticationRepository.currentUser.isNotEmpty
+              ? AuthenticationState.authenticated(
+                  authenticationRepository.currentUser)
+              : const AuthenticationState.unauthenticated(),
+        ) {
+    on<_AuthenticationUserChanged>(_onUserChanged);
+    on<AuthenticationLogOutRequested>(_onLogoutRequested);
+    _authenticationUserSubscription = _authenticationRepository.user.listen(
+      (user) => add(_AuthenticationUserChanged(user)),
     );
   }
 
   final AuthenticationRepository _authenticationRepository;
-  final UserRepository _userRepository;
-  late StreamSubscription<AuthenticationStatus>
-      _authenticationStatusSubscription;
+  late StreamSubscription<User> _authenticationUserSubscription;
+
+  void _onUserChanged(
+      _AuthenticationUserChanged event, Emitter<AuthenticationState> emit) {
+    emit(event.user.isNotEmpty
+        ? AuthenticationState.authenticated(event.user)
+        : const AuthenticationState.unauthenticated());
+  }
+
+  void _onLogoutRequested(
+      AuthenticationLogOutRequested event, Emitter<AuthenticationState> emit) {
+    unawaited(_authenticationRepository.logOut());
+  }
 
   @override
   Future<void> close() {
-    _authenticationStatusSubscription.cancel();
+    _authenticationUserSubscription.cancel();
     return super.close();
-  }
-
-  Future<void> _onAuthenticationStatusChanged(
-    _AuthenticationStatusChanged event,
-    Emitter<AuthenticationState> emit,
-  ) async {
-    switch (event.status) {
-      case AuthenticationStatus.unauthenticated:
-        return emit(const AuthenticationState.unauthenticated());
-      case AuthenticationStatus.authenticated:
-        final user = await _tryGetUser();
-        return emit(
-          user != null
-              ? AuthenticationState.authenticated(user)
-              : const AuthenticationState.unauthenticated(),
-        );
-      case AuthenticationStatus.unknown:
-        return emit(const AuthenticationState.unknown());
-    }
-  }
-
-  void _onAuthenticationLogoutRequested(
-    AuthenticationLogOutRequested event,
-    Emitter<AuthenticationState> emit,
-  ) {
-    _authenticationRepository.logOut();
-  }
-
-  Future<User?> _tryGetUser() async {
-    try {
-      final user = await _userRepository.getUser();
-      return user;
-    } catch (_) {
-      return null;
-    }
   }
 }

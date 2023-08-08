@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trainxercise/authentication/bloc/authentication_bloc.dart';
 import 'package:trainxercise/ui/screens/introduction_screen.dart';
-import 'package:user_repository/user_repository.dart';
 
 class AppMaterial extends StatelessWidget {
   const AppMaterial({super.key});
@@ -18,8 +17,7 @@ class AppMaterial extends StatelessWidget {
       child: BlocProvider(
         create: (context) => AuthenticationBloc(
             authenticationRepository:
-                RepositoryProvider.of<AuthenticationRepository>(context),
-            userRepository: UserRepository()),
+                RepositoryProvider.of<AuthenticationRepository>(context)),
         child: MaterialApp(
           title: 'Trainxercise',
           theme: ThemeData(

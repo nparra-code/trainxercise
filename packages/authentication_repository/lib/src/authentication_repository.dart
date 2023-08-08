@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:html';
+import 'dart:io';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:flame/cache.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SignUpWithEmailAndPasswordFailure implements Exception {
   final String message;
@@ -129,23 +133,34 @@ class LogInWithGoogleFailure implements Exception {
 class LogOutFailure implements Exception {}
 
 class AuthenticationRepository {
+  final MemoryCache _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
   AuthenticationRepository({
+    MemoryCache? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
-  })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
+  })  : _cache = cache ?? MemoryCache(),
+        _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
 
   @visibleForTesting
   bool isWeb = kIsWeb;
 
+  @visibleForTesting
+  static const String userCacheKey = 'cache';
+
   Stream<User> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+      _cache.setValue(userCacheKey, user);
       return user;
     });
+  }
+
+  User get currentUser {
+    return _cache.getValue(userCacheKey) ?? User.empty;
   }
 
   Future<void> signUp({required String email, required String password}) async {
@@ -194,10 +209,7 @@ class AuthenticationRepository {
 
   Future<void> logOut() async {
     try {
-      await Future.wait([
-        _firebaseAuth.signOut(),
-        _googleSignIn.signOut()
-      ]);
+      await Future.wait([_firebaseAuth.signOut(), _googleSignIn.signOut()]);
     } catch (_) {
       throw LogOutFailure();
     }
