@@ -6,9 +6,10 @@ class LargeButtonWidget extends StatefulWidget {
   final Function()? toDo;
   final Color buttonColor;
   final Color textColor;
+  final Key? buttonKey;
 
   const LargeButtonWidget(
-      {super.key, required this.title, this.toDo, required this.buttonColor, required this.textColor});
+      {super.key, required this.title, this.toDo, required this.buttonColor, required this.textColor, this.buttonKey});
 
   @override
   State<LargeButtonWidget> createState() => _LargeButtonWidgetState();
@@ -20,6 +21,7 @@ class _LargeButtonWidgetState extends State<LargeButtonWidget> {
     double devHeight = MediaQuery.sizeOf(context).height;
     double devWidth = MediaQuery.sizeOf(context).width;
     return InkWell(
+      key: widget.buttonKey,
       onTap: widget.toDo,
       child: Ink(
         width: devWidth * 0.8333,

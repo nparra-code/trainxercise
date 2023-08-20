@@ -14,7 +14,9 @@ void main() async {
   final authenticationRepository = AuthenticationRepository();
   await authenticationRepository.user.first;
 
-  runApp(const AppMaterial());
+  print("starting to run project");
+
+  runApp(AppMaterial(authenticationRepository: authenticationRepository));
 }
 
 class AppBlocObserver extends BlocObserver {
@@ -24,7 +26,7 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    if (bloc is Cubit) print(change);
+    //if (bloc is Cubit) print(change);
   }
 
   @override
@@ -33,6 +35,6 @@ class AppBlocObserver extends BlocObserver {
       Transition<dynamic, dynamic> transition,
       ) {
     super.onTransition(bloc, transition);
-    print(transition);
+    //print(transition);
   }
 }

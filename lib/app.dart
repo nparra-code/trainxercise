@@ -6,18 +6,21 @@ import 'package:trainxercise/authentication/bloc/authentication_bloc.dart';
 import 'package:trainxercise/ui/screens/introduction_screen.dart';
 
 class AppMaterial extends StatelessWidget {
-  const AppMaterial({super.key});
+  final AuthenticationRepository _authenticationRepository;
+
+  const AppMaterial(
+      {super.key, required AuthenticationRepository authenticationRepository})
+      : _authenticationRepository = authenticationRepository;
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    return RepositoryProvider(
-      create: (context) => AuthenticationRepository(),
+    return RepositoryProvider.value(
+      value: _authenticationRepository,
       child: BlocProvider(
-        create: (context) => AuthenticationBloc(
-            authenticationRepository:
-                RepositoryProvider.of<AuthenticationRepository>(context)),
+        create: (_) => AuthenticationBloc(
+            authenticationRepository: _authenticationRepository),
         child: MaterialApp(
           title: 'Trainxercise',
           theme: ThemeData(

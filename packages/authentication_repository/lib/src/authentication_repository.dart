@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:html';
-import 'dart:io';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -8,7 +6,6 @@ import 'package:flame/cache.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
-import 'package:path_provider/path_provider.dart';
 
 class SignUpWithEmailAndPasswordFailure implements Exception {
   final String message;

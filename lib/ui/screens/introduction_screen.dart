@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trainxercise/ui/screens/login_screen.dart';
+import 'package:trainxercise/authentication/login/login_page.dart';
 import 'package:trainxercise/ui/widgets/large_button_widget.dart';
 import 'package:trainxercise/ui/widgets/text_widget.dart';
 import 'package:trainxercise/ui/widgets/title_widget.dart';
@@ -67,7 +67,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const LoginScreen()));
+                                builder: (context) => const LoginPage()));
                       },
                       textColor: Colors.black,
                     ),
