@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trainxercise/authentication/bloc/authentication_bloc.dart';
+import 'package:trainxercise/ui/screens/home_screen.dart';
 import 'package:trainxercise/ui/screens/introduction_screen.dart';
 
 class AppMaterial extends StatelessWidget {
@@ -49,8 +50,9 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: IntroductionScreen(),
+    final user = context.select((AuthenticationBloc bloc) => bloc.state.user);
+    return Scaffold(
+      body: user.isEmpty ? const IntroductionScreen() : const HomeScreen(),
     );
   }
 }

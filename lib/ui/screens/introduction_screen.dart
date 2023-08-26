@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trainxercise/authentication/login/login_page.dart';
+import 'package:trainxercise/authentication/sign_up/sign_up_page.dart';
 import 'package:trainxercise/ui/widgets/large_button_widget.dart';
 import 'package:trainxercise/ui/widgets/text_widget.dart';
 import 'package:trainxercise/ui/widgets/title_widget.dart';
@@ -71,9 +72,15 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                       },
                       textColor: Colors.black,
                     ),
-                    const LargeButtonWidget(
+                    LargeButtonWidget(
                       title: 'Registrar',
-                      buttonColor: Color.fromRGBO(217, 217, 217, 1),
+                      buttonColor: const Color.fromRGBO(217, 217, 217, 1),
+                      toDo: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpPage()));
+                      },
                       textColor: Colors.black,
                     )
                   ],

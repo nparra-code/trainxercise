@@ -5,6 +5,8 @@ class LargeFormField extends StatefulWidget {
   final Icon icon;
   final bool checkIfPassword;
 
+  final String? errorText;
+
   const LargeFormField(
       {super.key,
       required this.hint,
@@ -12,7 +14,8 @@ class LargeFormField extends StatefulWidget {
       required this.checkIfPassword,
       required this.formKey,
       this.onChanged,
-      required this.keyboardType});
+      required this.keyboardType,
+      this.errorText});
 
   final Key? formKey;
 
@@ -45,6 +48,7 @@ class _LargeFormFieldState extends State<LargeFormField> {
             icon: widget.icon,
             iconColor: const Color.fromRGBO(0, 0, 0, 0.25),
             hintText: widget.hint,
+            errorText: widget.errorText
           ),
           key: widget.formKey,
           onChanged: widget.onChanged,

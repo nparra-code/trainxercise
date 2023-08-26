@@ -46,18 +46,9 @@ class LoginScreen extends StatelessWidget {
                   opacity: 0.5,
                 ),
               ),
-              /*const LargeFormField(
-                  hint: 'Correo electronico',
-                  icon: Icon(Icons.alternate_email),
-                  checkIfPassword: false),*/
               _EmailInput(),
               Column(
                 children: [
-                  /*const LargeFormField(
-                    hint: 'Contraseña',
-                    icon: Icon(Icons.password),
-                    checkIfPassword: true,
-                  ),*/
                   _PasswordInput(),
                   Container(
                     margin: EdgeInsets.only(
@@ -72,10 +63,6 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              /*LargeButtonWidget(
-                  title: 'Entrar',
-                  buttonColor: Theme.of(context).colorScheme.primary,
-                  textColor: Colors.white),*/
               _LoginButton(),
               Stack(
                 children: [

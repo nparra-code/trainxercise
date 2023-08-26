@@ -6,6 +6,11 @@ enum PasswordValidationError {
   invalid
 }
 
+enum ConfirmedPasswordValidationError {
+  invalid,
+  mismatch
+}
+
 /// {@template password}
 /// Form input for an password input.
 /// {@endtemplate}
@@ -24,5 +29,28 @@ class Password extends FormzInput<String, PasswordValidationError> {
     return _passwordRegExp.hasMatch(value ?? '')
         ? null
         : PasswordValidationError.invalid;
+  }
+}
+
+class ConfirmedPassword extends FormzInput<String, ConfirmedPasswordValidationError> {
+  final String password;
+
+  const ConfirmedPassword.pure({
+    this.password = ''
+  }) : super.pure('');
+
+  const ConfirmedPassword.dirty({
+    required this.password,
+    String value = ''
+  }) : super.dirty(value);
+
+  @override
+  ConfirmedPasswordValidationError? validator(String value) {
+    if (value.isEmpty) {
+      return ConfirmedPasswordValidationError.invalid;
+    }
+    return password == value
+        ? null
+        : ConfirmedPasswordValidationError.mismatch;
   }
 }
